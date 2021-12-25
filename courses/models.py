@@ -3,6 +3,7 @@ from django.db.models.expressions import OrderBy
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from .fields import Orderfield
 
 # Create your models here.
 class Subject(models.Model):
@@ -39,9 +40,13 @@ class Module(models.Model):
                                 on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
+    order = Orderfield(blank=True, for_fields=['course'])
+
+    class Meta:
+        ordering = ['order']
 
     def __str__(self):
-        return self.title
+        return f'{self.title}.{self.order}'
 
 class Content(models.Model):
     module = models.ForeignKey(Module,
@@ -57,6 +62,9 @@ class Content(models.Model):
                                     )})
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey('content_type', 'object_id')
+    order = Orderfield(blank=True, for_fields=['module'])
+    class Meta:
+        ordering = ['order']
 
 class ItemBase(models.Model):
     owner = models.ForeignKey(User,
