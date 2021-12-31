@@ -18,3 +18,5 @@ class CourseAdmin(admin.ModelAdmin):
     list_filter = ['owner', 'subject', 'created']
     search_fields = ['title', 'overview']
     inlines = [ModuleInline ]
+
+admin.site.index_template = 'memcache_status/admin_index.html'
