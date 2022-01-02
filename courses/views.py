@@ -154,7 +154,7 @@ class CourseListView(TemplateResponseMixin, View):
                             total_courses=Count('courses'))
             cache.set('all_subjects', subjects)
         all_courses = Course.objects.annotate(
-                        total_modules = Count
+                        total_modules = Count('modules')
         )
         if subject:
             subject = get_object_or_404(Subject, slug=subject)
@@ -181,3 +181,4 @@ class CourseDetailView(DetailView):
         context['enroll_form'] = CourseEnrollForm(
                                     initial={'course':self.object})
         return context
+

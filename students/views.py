@@ -47,7 +47,7 @@ class StudentCourseDetailView(DetailView):
     template_name = 'students/course/detail.html'
 
     def get_queryset(self):
-        qs=super().get_queryset()
+        qs = super().get_queryset()
         return qs.filter(students__in=[self.request.user])
 
     def get_context_data(self, **kwargs):
@@ -58,7 +58,9 @@ class StudentCourseDetailView(DetailView):
                                     id=self.kwargs['module.id']
             )
         else:
-            context['module'] = course.modules.all()[0]
+            if course.modules.count():
+                print(course.modules.count())
+                context['module'] = course.modules.all()[0]
         return context
 
 
